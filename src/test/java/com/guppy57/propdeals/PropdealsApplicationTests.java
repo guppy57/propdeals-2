@@ -1,10 +1,10 @@
-package com.guppy57.propdeals_2;
+package com.guppy57.propdeals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Propdeals2ApplicationTests {
+class PropdealsApplicationTests {
 
 	@Test
 	void contextLoads() {
