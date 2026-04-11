@@ -374,6 +374,8 @@ CREATE TABLE public.report_types (
   research_type text NOT NULL,
   prompt NOT NULL,
   created_at timestamptz DEFAULT now(),
+
+    CONSTRAINT report_types_pkey PRIMARY KEY (id)
 )
 
 CREATE TABLE public.research_reports (
