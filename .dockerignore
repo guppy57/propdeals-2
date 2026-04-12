@@ -1,0 +1,9 @@
+.git
+.gitignore
+.idea
+.vscode
+target/
+*.iml
+*.md
+flyway.properties
+data.sql
