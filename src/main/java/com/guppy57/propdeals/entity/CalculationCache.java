@@ -119,7 +119,7 @@ public record CalculationCache(
         Double monthlyUtilityInternet,
         Double monthlyUtilityTotal,
         // House hack utility splits
-        Double roomateUtilities,
+        Double roommateUtilities,
         Double ownerUtilities,
         Double emergencyFund3m,       // 3-month PITI + utilities reserve
 
@@ -157,8 +157,8 @@ public record CalculationCache(
         Double mrAnnualCashFlowY2,
 
         // House hack utility detail by year
-        Double roomateUtilitiesY1,
-        Double roomateUtilitiesY2,
+        Double roommateUtilitiesY1,
+        Double roommateUtilitiesY2,
         Double ownerUtilitiesY1,
         Double ownerUtilitiesY2,
         Double ownerMonthlyCost,      // owner's net out-of-pocket

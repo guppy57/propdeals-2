@@ -1,0 +1,134 @@
+package com.guppy57.propdeals.service;
+
+import com.guppy57.propdeals.dto.PropertyRequest;
+import com.guppy57.propdeals.dto.PropertyResponse;
+import com.guppy57.propdeals.entity.Property;
+import com.guppy57.propdeals.entity.PropertyStatus;
+import com.guppy57.propdeals.repository.PropertyRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class PropertyService {
+
+    private final PropertyRepository repository;
+
+    public PropertyService(PropertyRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<PropertyResponse> findAll(UUID userId) {
+        return repository.findAllByUserId(userId)
+                .stream()
+                .map(PropertyResponse::from)
+                .toList();
+    }
+
+    public PropertyResponse findById(UUID id, UUID userId) {
+        return repository.findByIdAndUserId(id, userId)
+                .map(PropertyResponse::from)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public PropertyResponse create(PropertyRequest req, UUID userId) {
+        if (req.address1() == null || req.address1().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "address1 is required");
+        }
+        Instant now = Instant.now();
+        Property entity = toEntity(null, req, userId, now, now);
+        return PropertyResponse.from(repository.save(entity));
+    }
+
+    public PropertyResponse update(UUID id, PropertyRequest req, UUID userId) {
+        Property existing = repository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Property updated = toEntity(existing.id(), req, userId, existing.createdAt(), Instant.now());
+        return PropertyResponse.from(repository.save(updated));
+    }
+
+    public void delete(UUID id, UUID userId) {
+        if (repository.findByIdAndUserId(id, userId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        repository.deleteById(id);
+    }
+
+    private Property toEntity(UUID id, PropertyRequest req, UUID userId,
+                               Instant createdAt, Instant updatedAt) {
+        return new Property(
+                id,
+                req.address1(),
+                req.fullAddress(),
+                req.zillowLink(),
+                req.purchasePrice(),
+                req.beds(),
+                req.baths(),
+                req.squareFt(),
+                req.builtIn(),
+                req.units(),
+                req.walkScore(),
+                req.transitScore(),
+                req.bikeScore(),
+                req.lat(),
+                req.lon(),
+                req.annualElectricityCostEst(),
+                req.status() != null ? req.status() : PropertyStatus.ACTIVE,
+                req.listedDate(),
+                req.hasTenants() != null ? req.hasTenants() : false,
+                req.hasReducedPrice() != null ? req.hasReducedPrice() : false,
+                req.county(),
+                req.annualTaxAmount(),
+                req.rentDdCompleted() != null ? req.rentDdCompleted() : false,
+                req.gasStationDistanceMiles(),
+                req.schoolDistanceMiles(),
+                req.universityDistanceMiles(),
+                req.groceryStoreDistanceMiles(),
+                req.hospitalDistanceMiles(),
+                req.parkDistanceMiles(),
+                req.transitStationDistanceMiles(),
+                req.gasStationCount5mi(),
+                req.schoolCount5mi(),
+                req.universityCount5mi(),
+                req.groceryStoreCount5mi(),
+                req.hospitalCount5mi(),
+                req.parkCount5mi(),
+                req.transitStationCount5mi(),
+                req.sellerCircumstances(),
+                req.obtainedCountyRecords(),
+                req.historicalTurnoverRate(),
+                req.hasDeedRestrictions(),
+                req.hasHao(),
+                req.hasHistoricPreservation(),
+                req.setbacks(),
+                req.hasEasements(),
+                req.easements(),
+                req.inFloodZone(),
+                req.hasOpenPulledPermits(),
+                req.hasWorkDoneWoPermits(),
+                req.lastPurchasePrice(),
+                req.lastPurchaseDate(),
+                req.countyRecordNotes(),
+                req.propertyNotes(),
+                req.whitepagesNotes(),
+                req.rentEstimate(),
+                req.rentEstimateLow(),
+                req.rentEstimateHigh(),
+                req.isFsbo() != null ? req.isFsbo() : false,
+                req.averageOwnershipDuration(),
+                req.estPrice(),
+                req.estPriceLow(),
+                req.estPriceHigh(),
+                req.hasMarketResearch() != null ? req.hasMarketResearch() : false,
+                req.propertyConditionScore() != null ? req.propertyConditionScore() : 3,
+                req.reasonForPassing(),
+                userId,
+                createdAt,
+                updatedAt
+        );
+    }
+}
