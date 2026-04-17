@@ -5,25 +5,64 @@ import com.guppy57.propdeals.dto.PropertyResponse;
 import com.guppy57.propdeals.entity.Property;
 import com.guppy57.propdeals.entity.PropertyStatus;
 import com.guppy57.propdeals.repository.PropertyRepository;
+import com.guppy57.propdeals.repository.PropertyRowMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class PropertyService {
 
-    private final PropertyRepository repository;
+    private static final Map<String, String> SORT_COLUMN_MAP = Map.ofEntries(
+            Map.entry("address1",      "address1"),
+            Map.entry("city",          "city"),
+            Map.entry("zipCode",       "zip_code"),
+            Map.entry("state",         "state"),
+            Map.entry("beds",          "beds"),
+            Map.entry("baths",         "baths"),
+            Map.entry("squareFt",      "square_ft"),
+            Map.entry("purchasePrice", "purchase_price"),
+            Map.entry("status",        "status"),
+            Map.entry("createdAt",     "created_at")
+    );
 
-    public PropertyService(PropertyRepository repository) {
+    private static final PropertyRowMapper ROW_MAPPER = new PropertyRowMapper();
+
+    private final PropertyRepository repository;
+    private final NamedParameterJdbcTemplate jdbc;
+
+    public PropertyService(PropertyRepository repository, NamedParameterJdbcTemplate jdbc) {
         this.repository = repository;
+        this.jdbc = jdbc;
     }
 
-    public List<PropertyResponse> findAll(UUID userId, int page, int size) {
-        return repository.findPageByUserId(userId, size, page * size)
+    public List<PropertyResponse> findAll(UUID userId, int page, int size,
+                                          String search, String sortBy, String sortDir) {
+        String col = SORT_COLUMN_MAP.getOrDefault(sortBy, "created_at");
+        String dir = "ASC".equalsIgnoreCase(sortDir) ? "ASC" : "DESC";
+
+        String sql = """
+                SELECT * FROM properties
+                WHERE user_id = :userId
+                  AND (:search = '' OR address1 ILIKE '%' || :search || '%')
+                ORDER BY %s %s
+                LIMIT :limit OFFSET :offset
+                """.formatted(col, dir);
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("userId", userId)
+                .addValue("search", search != null ? search : "")
+                .addValue("limit", size)
+                .addValue("offset", (long) page * size);
+
+        return jdbc.query(sql, params, ROW_MAPPER)
                 .stream()
                 .map(PropertyResponse::from)
                 .toList();

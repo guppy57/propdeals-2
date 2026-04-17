@@ -23,10 +23,13 @@ public class PropertyController {
 
     @GetMapping
     public List<PropertyResponse> list(
-            @RequestParam(defaultValue = "0")   int page,
-            @RequestParam(defaultValue = "100") int size,
+            @RequestParam(defaultValue = "0")    int page,
+            @RequestParam(defaultValue = "100")  int size,
+            @RequestParam(defaultValue = "")     String q,
+            @RequestParam(defaultValue = "")     String sortBy,
+            @RequestParam(defaultValue = "DESC") String sortDir,
             @AuthenticationPrincipal SupabaseUser user) {
-        return service.findAll(user.id(), page, size);
+        return service.findAll(user.id(), page, size, q, sortBy, sortDir);
     }
 
     @GetMapping("/{id}")
