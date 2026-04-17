@@ -22,8 +22,8 @@ public class PropertyService {
         this.repository = repository;
     }
 
-    public List<PropertyResponse> findAll(UUID userId) {
-        return repository.findAllByUserId(userId)
+    public List<PropertyResponse> findAll(UUID userId, int page, int size) {
+        return repository.findPageByUserId(userId, size, page * size)
                 .stream()
                 .map(PropertyResponse::from)
                 .toList();
@@ -64,6 +64,10 @@ public class PropertyService {
                 id,
                 req.address1(),
                 req.fullAddress(),
+                req.city(),
+                req.zipCode(),
+                req.state(),
+                req.country(),
                 req.zillowLink(),
                 req.purchasePrice(),
                 req.beds(),

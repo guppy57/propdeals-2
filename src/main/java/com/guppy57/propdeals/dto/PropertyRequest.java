@@ -13,6 +13,10 @@ public record PropertyRequest(
 
         String address1,
         String fullAddress,
+        String city,
+        String zipCode,
+        String state,
+        String country,
         String zillowLink,
         Long purchasePrice,
         Long beds,

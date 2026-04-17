@@ -14,6 +14,10 @@ public record PropertyResponse(
         UUID id,
         String address1,
         String fullAddress,
+        String city,
+        String zipCode,
+        String state,
+        String country,
         String zillowLink,
         Long purchasePrice,
         Long beds,
@@ -96,7 +100,7 @@ public record PropertyResponse(
 ) {
     public static PropertyResponse from(Property e) {
         return new PropertyResponse(
-                e.id(), e.address1(), e.fullAddress(), e.zillowLink(),
+                e.id(), e.address1(), e.fullAddress(), e.city(), e.zipCode(), e.state(), e.country(), e.zillowLink(),
                 e.purchasePrice(), e.beds(), e.baths(), e.squareFt(), e.builtIn(), e.units(),
                 e.walkScore(), e.transitScore(), e.bikeScore(), e.lat(), e.lon(),
                 e.annualElectricityCostEst(),

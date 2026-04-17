@@ -22,8 +22,11 @@ public class PropertyController {
     }
 
     @GetMapping
-    public List<PropertyResponse> list(@AuthenticationPrincipal SupabaseUser user) {
-        return service.findAll(user.id());
+    public List<PropertyResponse> list(
+            @RequestParam(defaultValue = "0")   int page,
+            @RequestParam(defaultValue = "100") int size,
+            @AuthenticationPrincipal SupabaseUser user) {
+        return service.findAll(user.id(), page, size);
     }
 
     @GetMapping("/{id}")

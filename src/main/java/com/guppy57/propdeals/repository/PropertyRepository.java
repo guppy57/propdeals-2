@@ -14,6 +14,11 @@ public interface PropertyRepository extends CrudRepository<Property, UUID> {
     @Query("SELECT * FROM properties WHERE user_id = :userId ORDER BY created_at DESC")
     List<Property> findAllByUserId(@Param("userId") UUID userId);
 
+    @Query("SELECT * FROM properties WHERE user_id = :userId ORDER BY created_at DESC LIMIT :limit OFFSET :offset")
+    List<Property> findPageByUserId(@Param("userId") UUID userId,
+                                    @Param("limit") int limit,
+                                    @Param("offset") int offset);
+
     @Query("SELECT * FROM properties WHERE id = :id AND user_id = :userId")
     Optional<Property> findByIdAndUserId(@Param("id") UUID id, @Param("userId") UUID userId);
 

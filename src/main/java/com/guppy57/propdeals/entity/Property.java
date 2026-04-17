@@ -18,6 +18,10 @@ public record Property(
 
         String address1,              // NOT NULL UNIQUE
         String fullAddress,
+        String city,
+        String zipCode,
+        String state,
+        String country,
         String zillowLink,
         Long purchasePrice,
         Long beds,
