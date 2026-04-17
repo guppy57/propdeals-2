@@ -51,7 +51,7 @@ public class PropertyService {
         String sql = """
                 SELECT * FROM properties
                 WHERE user_id = :userId
-                  AND (:search = '' OR address1 ILIKE '%' || :search || '%')
+                  AND (:search = '' OR address1 ILIKE '%%' || :search || '%%')
                 ORDER BY %s %s
                 LIMIT :limit OFFSET :offset
                 """.formatted(col, dir);
