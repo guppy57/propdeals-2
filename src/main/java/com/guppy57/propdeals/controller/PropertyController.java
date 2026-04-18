@@ -1,5 +1,6 @@
 package com.guppy57.propdeals.controller;
 
+import com.guppy57.propdeals.dto.PropertyDetailResponse;
 import com.guppy57.propdeals.dto.PropertyRequest;
 import com.guppy57.propdeals.dto.PropertyResponse;
 import com.guppy57.propdeals.security.SupabaseUser;
@@ -33,8 +34,8 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public PropertyResponse get(@PathVariable UUID id,
-                                @AuthenticationPrincipal SupabaseUser user) {
+    public PropertyDetailResponse get(@PathVariable UUID id,
+                                      @AuthenticationPrincipal SupabaseUser user) {
         return service.findById(id, user.id());
     }
 

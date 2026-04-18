@@ -1,11 +1,14 @@
 package com.guppy57.propdeals.service;
 
+import com.guppy57.propdeals.dto.PropertyDetailResponse;
 import com.guppy57.propdeals.dto.PropertyRequest;
 import com.guppy57.propdeals.dto.PropertyResponse;
+import com.guppy57.propdeals.dto.UnitResponse;
 import com.guppy57.propdeals.entity.Property;
 import com.guppy57.propdeals.entity.PropertyStatus;
 import com.guppy57.propdeals.repository.PropertyRepository;
 import com.guppy57.propdeals.repository.PropertyRowMapper;
+import com.guppy57.propdeals.repository.UnitRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -36,10 +39,13 @@ public class PropertyService {
     private static final PropertyRowMapper ROW_MAPPER = new PropertyRowMapper();
 
     private final PropertyRepository repository;
+    private final UnitRepository unitRepository;
     private final NamedParameterJdbcTemplate jdbc;
 
-    public PropertyService(PropertyRepository repository, NamedParameterJdbcTemplate jdbc) {
+    public PropertyService(PropertyRepository repository, UnitRepository unitRepository,
+                           NamedParameterJdbcTemplate jdbc) {
         this.repository = repository;
+        this.unitRepository = unitRepository;
         this.jdbc = jdbc;
     }
 
@@ -68,10 +74,12 @@ public class PropertyService {
                 .toList();
     }
 
-    public PropertyResponse findById(UUID id, UUID userId) {
-        return repository.findByIdAndUserId(id, userId)
-                .map(PropertyResponse::from)
+    public PropertyDetailResponse findById(UUID id, UUID userId) {
+        Property prop = repository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        List<UnitResponse> units = unitRepository.findAllByPropertyId(id)
+                .stream().map(UnitResponse::from).toList();
+        return new PropertyDetailResponse(PropertyResponse.from(prop), units);
     }
 
     public PropertyResponse create(PropertyRequest req, UUID userId) {
