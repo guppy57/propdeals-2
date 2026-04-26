@@ -20,6 +20,16 @@ public record AssumptionSetResponse(
         String stateTaxCode,
         Float landValuePrcnt,
 
+        // Closing cost line item defaults
+        Double brokerFees,
+        Double homeInspectionSfhFee,
+        Double homeInspectionMfBaseFee,
+        Double homeInspectionMfPerUnitFee,
+        Double propertySurveyFee,
+        Double pestInspectionFee,
+        Double structuralEngineeringFee,
+        Double sewerScopeFee,
+
         // ── LTR-only ─────────────────────────────────────────────────
         Float rentAppreciationRate,
         Float propertyTaxRate,
@@ -57,6 +67,9 @@ public record AssumptionSetResponse(
                 e.id(), e.segment(), e.description(), e.isDefault(),
                 e.appreciationRate(), e.closingCostsRate(), e.federalTaxRate(),
                 e.stateTaxCode(), e.landValuePrcnt(),
+                e.brokerFees(), e.homeInspectionSfhFee(), e.homeInspectionMfBaseFee(),
+                e.homeInspectionMfPerUnitFee(), e.propertySurveyFee(), e.pestInspectionFee(),
+                e.structuralEngineeringFee(), e.sewerScopeFee(),
                 e.rentAppreciationRate(), e.propertyTaxRate(), e.homeInsuranceRate(),
                 e.vacancyRate(), e.repairSavingsRate(), e.capexReserveRate(),
                 e.discountRate(), e.sellingCostsRate(), e.longtermCapitalGainsTaxRate(),

@@ -27,6 +27,16 @@ public record AssumptionSet(
         String stateTaxCode,
         Float landValuePrcnt,
 
+        // Closing cost line item defaults
+        Double brokerFees,
+        Double homeInspectionSfhFee,
+        Double homeInspectionMfBaseFee,
+        Double homeInspectionMfPerUnitFee,
+        Double propertySurveyFee,
+        Double pestInspectionFee,
+        Double structuralEngineeringFee,
+        Double sewerScopeFee,
+
         // ── LTR-only ─────────────────────────────────────────────────
         Float rentAppreciationRate,
         Float propertyTaxRate,

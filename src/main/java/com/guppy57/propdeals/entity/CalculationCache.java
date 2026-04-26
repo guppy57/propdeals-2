@@ -90,7 +90,7 @@ public record CalculationCache(
         Double ccPestInspectionFee,
         Double ccStructuralEngineerFee,
         Double ccSewerInspectionFee,
-        Double ccKellerWilliamsFee,
+        Double ccBrokerFees,
         Double ccCourierFees,
         Double ccNotaryFees,
         Double ccTotalOptionalCosts,
