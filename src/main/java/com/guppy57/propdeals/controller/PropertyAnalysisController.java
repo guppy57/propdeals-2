@@ -46,5 +46,7 @@ public class PropertyAnalysisController {
     }
 
     @PutMapping
-    public  PropertyAnalysisResponse update(PropertyAnalysisRequest analysis) {}
+    public PropertyAnalysisResponse update(PropertyAnalysisRequest analysis) {
+        throw new UnsupportedOperationException("not implemented");
+    }
 }
