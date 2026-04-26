@@ -1,6 +1,10 @@
 package com.guppy57.propdeals.config;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
@@ -23,16 +27,6 @@ public class RabbitMQConfig {
                 .withArgument("x-dead-letter-exchange", DLQ_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DLQ_ROUTING_KEY)
                 .build();
-    }
-
-    @Bean
-    public TopicExchange exchange() {
-        return ExchangeBuilder.topicExchange(EXCHANGE_NAME).durable(true).build();
-    }
-
-    @Bean
-    public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
     @Bean

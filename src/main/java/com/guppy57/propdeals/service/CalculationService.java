@@ -1,23 +1,22 @@
 package com.guppy57.propdeals.service;
 
 import com.guppy57.propdeals.dto.QueueMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculationService {
 
+    private static final Logger log = LoggerFactory.getLogger(CalculationService.class);
+
     public void processNewAnalysis(QueueMessage message) {
+        log.info("processNewAnalysis called: analysisId={}", message.analysisId());
         // TODO: implement LTR / flip calculation for new analysis
-        // get the assumption set
-        // get the loan
-        // get the property
-        // get the property's units
-        // (get the user's settings)
-        // determine which unit belongs to the user IF it is a HOUSE HACK
-        // TODO - this will eventually be changed to be based on the user's setting
     }
 
     public void processReanalysis(QueueMessage message) {
+        log.info("processReanalysis called: analysisId={}", message.analysisId());
         // TODO: implement reprocessing logic
     }
 
@@ -25,25 +24,21 @@ public class CalculationService {
 
     public void applyClosingCostCalculations() {
         // TODO - use values from Assumption Set / User Settings if possible
-        // TODO - default to something if the user doesn't have anything set
     }
 
     public void applyInvestmentCalculations() {}
 
-    public double calculateMortgage() {}
+    public double calculateMortgage() { return 0; }
 
-    public double calculateIRR() {}
+    public double calculateIRR() { return 0; }
 
-    public double calculateNPV() {}
+    public double calculateNPV() { return 0; }
 
-    public double calculatePaybackPeriod() {}
+    public double calculatePaybackPeriod() { return 0; }
 
-    public double calculateNetProceeds() {}
+    public double calculateNetProceeds() { return 0; }
 
-    public double calculateExpectedGains() {}
+    public double calculateExpectedGains() { return 0; }
 
-    public double calculateEmergencyFund() {
-        // TODO - figure out how to make this something anyone can use? Might have to be a settings option where you can put in:
-        // TODO - number of months, and a per-month fund amount and then we add in on the backend PITI, etc.
-    }
+    public double calculateEmergencyFund() { return 0; }
 }
