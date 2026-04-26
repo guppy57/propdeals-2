@@ -82,6 +82,11 @@ public class PropertyService {
         return new PropertyDetailResponse(PropertyResponse.from(prop), units);
     }
 
+    public boolean checkIfPropertyBelongsToUser(UUID propertyId, UUID userId) {
+        Property prop = repository.findById(propertyId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return prop.userId() == userId;
+    }
+
     public PropertyResponse create(PropertyRequest req, UUID userId) {
         if (req.address1() == null || req.address1().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "address1 is required");
