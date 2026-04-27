@@ -1,5 +1,6 @@
 package com.guppy57.propdeals.config;
 
+import com.guppy57.propdeals.entity.HouseHackingUnitPreference;
 import com.guppy57.propdeals.entity.PropertyStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +42,9 @@ public class DataConfig {
     JdbcCustomConversions jdbcCustomConversions() {
         return new JdbcCustomConversions(List.of(
                 new PropertyStatusReadingConverter(),
-                new PropertyStatusWritingConverter()
+                new PropertyStatusWritingConverter(),
+                new HouseHackingUnitPreferenceReadingConverter(),
+                new HouseHackingUnitPreferenceWritingConverter()
         ));
     }
 
@@ -58,6 +61,24 @@ public class DataConfig {
         @Override
         public String convert(PropertyStatus source) {
             return source.getDbValue();
+        }
+    }
+
+    @ReadingConverter
+    static class HouseHackingUnitPreferenceReadingConverter
+            implements Converter<String, HouseHackingUnitPreference> {
+        @Override
+        public HouseHackingUnitPreference convert(String source) {
+            return HouseHackingUnitPreference.valueOf(source);
+        }
+    }
+
+    @WritingConverter
+    static class HouseHackingUnitPreferenceWritingConverter
+            implements Converter<HouseHackingUnitPreference, String> {
+        @Override
+        public String convert(HouseHackingUnitPreference source) {
+            return source.name();
         }
     }
 
