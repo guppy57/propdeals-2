@@ -24,6 +24,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
+@org.springframework.context.annotation.Profile("!local")
 public class SecurityConfig {
 
     @Value("${supabase.url}")

@@ -1,0 +1,1 @@
+ALTER TABLE property_analysis DROP CONSTRAINT pa_property_deal_type_uk;

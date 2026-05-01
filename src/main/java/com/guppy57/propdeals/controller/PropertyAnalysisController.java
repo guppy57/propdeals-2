@@ -38,7 +38,7 @@ public class PropertyAnalysisController {
     }
 
     @PostMapping
-    public PropertyAnalysisResponse create(PropertyAnalysisRequest analysis, @AuthenticationPrincipal SupabaseUser user) {
+    public PropertyAnalysisResponse create(@RequestBody PropertyAnalysisRequest analysis, @AuthenticationPrincipal SupabaseUser user) {
         PropertyAnalysisResponse pa = service.create(analysis, user.id());
         QueueMessage message = new QueueMessage(pa.id(), ProcessType.NEW_ANALYSIS);
         messagingService.publish(message);
@@ -46,7 +46,7 @@ public class PropertyAnalysisController {
     }
 
     @PutMapping
-    public PropertyAnalysisResponse update(PropertyAnalysisRequest analysis) {
+    public PropertyAnalysisResponse update(@RequestBody PropertyAnalysisRequest analysis) {
         throw new UnsupportedOperationException("not implemented");
     }
 }
